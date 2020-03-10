@@ -48,6 +48,9 @@ class SyncTagTree():
             return False
 
         cmdb_all_hostname_list = []
+
+        ins_log.read_log('info', "server_list len: %d" % len(server_list))
+
         for server in server_list:
             hostname = server.get('hostname')
             ip = server.get('ip')
@@ -67,7 +70,7 @@ class SyncTagTree():
                     table_name=self.server_table, ip=ip, idc=idc, region=region, state=state, detail=detail,
                     hostname=hostname)
                 self.mb.change(update_sql)
-                # ins_log.read_log('info', '{}更新成功'.format(hostname))
+                ins_log.read_log('info', '{}更新成功'.format(hostname))
 
             else:
                 insert_sql = "insert into {table_name} (hostname,ip,idc,region,state,detail) VALUES ('{hostname}','{ip}','{idc}','{region}','{state}','{detail}');".format(
@@ -92,6 +95,7 @@ class SyncTagTree():
                 ins_log.read_log('info', '{}删除成功'.format(i[0]))  # i[0]:hostname
                 ins_log.read_log('info', '{}删除成功'.format(i[1]))  # i[1]: server_id
 
+        ins_log.read_log('info', "Sync finished")
 
 def main():
     """
